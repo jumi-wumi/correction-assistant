@@ -22,3 +22,19 @@ app.get("/", (request, response) => {
 const openai = new OpenAI({
     apiKey: process.env.OPEN_AI_KEY,
 });
+
+// OpenAI test
+app.get("/test", async(request, response) => {
+    console.log("request received on /test")
+
+    try{
+        const modelResponse = await openai.responses.create({
+            model: "gpt-4.1",
+            input: "Ge mig ett coolt djur-fakta"
+        }); 
+
+        response.json(modelResponse)
+    } catch(error) {
+        console.error(error); 
+    }
+});
