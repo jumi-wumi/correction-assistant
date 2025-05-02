@@ -6,12 +6,21 @@ import OpenAI from "openai";
 const app = express(); 
 
 dotenv.config(); 
+const corsOptions = {
+    // Vite's standard port 
+    origin:["http://localhost:5173"]
+}
 
-app.use(cors());
+// Pass options to only accept from the Vite origin for now
+app.use(cors(corsOptions));
 
 app.listen(process.env.PORT, () => {
     console.log(`Server started on port ${process.env.PORT}`)
 });
+
+app.get("/", (request, response) => {
+
+})
 
 //----------TEST SECTION! UNCOMMENT TO TEST ROUTE AND/OR API----------
 // // Test route
