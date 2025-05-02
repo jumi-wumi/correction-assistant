@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import './App.css'
+import Assistant from './components/Assistant';
 
 function App() {
 
@@ -14,7 +15,7 @@ function App() {
 
   return (
     <>
-
+    <Assistant />
     </>
   )
 }
