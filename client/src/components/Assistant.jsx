@@ -16,21 +16,21 @@ const Assistant = () => {
       {/* Input for the prompt */}
       <textarea
         placeholder="Vad kan jag hjälpa dig med?"
-        value="{prompt}"
+        value={prompt}
         onChange={(event) => setPrompt(event.target.value)}
       ></textarea>
 
       {/* Input for uppgiftsbeskrivning */}
       <textarea
         placeholder="Uppgiftsbeskrivning?"
-        value="{description}"
+        value={description}
         onChange={(event) => setDescription(event.target.value)}
       ></textarea>
 
       {/* Input for the assignment */}
       <textarea
         placeholder="Klistra in uppgiften som ska bedömas"
-        value="{assignment}"
+        value={assignment}
         onChange={(event) => setAssignment(event.target.value)}
       ></textarea>
     </div>
