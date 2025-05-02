@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -6,6 +6,15 @@ import './App.css'
 function App() {
   const [count, setCount] = useState(0)
 
+  const fetchAPI = async () => {
+    const response = await fetch("http://localhost:3000/");
+    console.log(response);
+  }
+
+  useEffect(() => {
+    fetchAPI();
+  })
+  
   return (
     <>
       <div>

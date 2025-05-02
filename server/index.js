@@ -19,7 +19,7 @@ app.listen(process.env.PORT, () => {
 });
 
 app.get("/", (request, response) => {
-
+    response.json("API fetch works")
 })
 
 //----------TEST SECTION! UNCOMMENT TO TEST ROUTE AND/OR API----------
