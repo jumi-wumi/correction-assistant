@@ -2,10 +2,15 @@ import express from "express";
 import cors from "cors"; 
 import dotenv from "dotenv"
 import OpenAI from "openai";
+import correctionRoute from "./routes/correct.js"
 
 const app = express(); 
 
 dotenv.config(); 
+
+app.use(express.json());
+
+// CORS
 const corsOptions = {
     // Vite's standard port 
     origin:["http://localhost:5173"]
@@ -14,6 +19,9 @@ const corsOptions = {
 // Pass options to only accept from the Vite origin for now
 app.use(cors(corsOptions));
 
+// Routes
+app.use("/correct", correctionRoute); 
+
 app.listen(process.env.PORT, () => {
     console.log(`Server started on port ${process.env.PORT}`)
 });
@@ -21,6 +29,7 @@ app.listen(process.env.PORT, () => {
 app.get("/", (request, response) => {
     response.json("API fetch works")
 })
+
 
 //----------TEST SECTION! UNCOMMENT TO TEST ROUTE AND/OR API----------
 // // Test route

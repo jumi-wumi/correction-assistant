@@ -10,6 +10,28 @@ const Assistant = () => {
   // Init the default assignment text as empty
   const [assignment, setAssignment] = useState("");
 
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/correct", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt,
+          description,
+          assignment,
+        }),
+      });
+
+      const data = await response.json();
+      console.log("Response:", data)
+      setResults(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="assistant-container">
       <h1>Bajsa på dig</h1>
@@ -33,6 +55,15 @@ const Assistant = () => {
         value={assignment}
         onChange={(event) => setAssignment(event.target.value)}
       ></textarea>
+
+      <button onClick={handleSubmit}>Rätta</button>
+
+      {/* Results from the GPT model  */}
+      {results.output && (
+        <div>
+        <p>{results.output[0]?.content[0]?.text}</p>
+        </div>
+      )}
     </div>
   );
 };
