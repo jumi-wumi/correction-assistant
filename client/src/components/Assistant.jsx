@@ -1,4 +1,7 @@
-import { use, useState } from "react";
+import { useState } from "react";
+import ReactMarkdown from "react-markdown";
+
+import GptResults from "./GptResults";
 
 const Assistant = () => {
   // Init the default prompt as empty
@@ -10,11 +13,11 @@ const Assistant = () => {
   // Init the default assignment text as empty
   const [assignment, setAssignment] = useState("");
   // Init state for active request to API
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
     // Set active loading when request to is sent
-    setLoading(true); 
+    setLoading(true);
 
     try {
       const response = await fetch("http://localhost:3000/correct", {
@@ -30,13 +33,13 @@ const Assistant = () => {
       });
 
       const data = await response.json();
-      console.log("Response:", data)
+      console.log("Response:", data);
       setResults(data);
     } catch (error) {
       console.error(error);
     } finally {
       // End loading to enable button press for new request
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
@@ -73,7 +76,7 @@ const Assistant = () => {
       {/* Results from the GPT model  */}
       {results.output && (
         <div>
-        <p>{results.output[0]?.content[0]?.text}</p>
+          <GptResults response={results.output[0]?.content[0]?.text} />
         </div>
       )}
     </div>
