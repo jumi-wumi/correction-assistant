@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { use, useState } from "react";
 
 const Assistant = () => {
   // Init the default prompt as empty
@@ -9,8 +9,13 @@ const Assistant = () => {
   const [results, setResults] = useState({});
   // Init the default assignment text as empty
   const [assignment, setAssignment] = useState("");
+  // Init state for active request to API
+  const [loading, setLoading] = useState(false); 
 
   const handleSubmit = async () => {
+    // Set active loading when request to is sent
+    setLoading(true); 
+
     try {
       const response = await fetch("http://localhost:3000/correct", {
         method: "POST",
@@ -29,6 +34,9 @@ const Assistant = () => {
       setResults(data);
     } catch (error) {
       console.error(error);
+    } finally {
+      // End loading to enable button press for new request
+      setLoading(false); 
     }
   };
 
@@ -56,7 +64,11 @@ const Assistant = () => {
         onChange={(event) => setAssignment(event.target.value)}
       ></textarea>
 
-      <button onClick={handleSubmit}>Rätta</button>
+      <button onClick={handleSubmit} disabled={loading}>
+        {loading ? "..." : "Rätta"}
+      </button>
+
+      {loading && <p>Rättar inlämning...</p>}
 
       {/* Results from the GPT model  */}
       {results.output && (
