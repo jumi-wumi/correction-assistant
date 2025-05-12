@@ -14,7 +14,7 @@ router.post("/", async(request, response) => {
 
     try{
         const modelResponse = await openai.responses.create({
-            model: "chatgpt-4o-latest",
+            model: "gpt-4.1-nano",
             input: `Du är en lärarsassistent. Här är uppgiftsbeskrivningen: "${description}". 
             Här är elevens inlämning: "${assignment}"
             Bedöm detta baserat på: "${prompt}".`
