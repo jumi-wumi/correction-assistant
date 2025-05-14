@@ -7,11 +7,13 @@ const getNotionTextFromUrl =  async (url) => {
     // get raw HTML from response 
     const html = await response.text();
 
+    console.log(html); 
+
     // jQuery-like parsing. Load HTML into Cheerio
     const $ = cheerio.load(html);
 
     // select all divs with notion's text class. Cheerio should find nested text
-    const textBlocksFromClass = $("div.notion-text-block"); 
+    const textBlocksFromClass = $("div.notion-selectable"); 
 
     const combinedTextBlocks = textBlocksFromClass 
     // map over selected elements, extract and trim text
@@ -23,5 +25,7 @@ const getNotionTextFromUrl =  async (url) => {
 
     return combinedTextBlocks;
 };
+
+getNotionTextFromUrl()
 
 export default getNotionTextFromUrl;
