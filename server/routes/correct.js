@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 dotenv.config();
 import OpenAI from "openai";
 
+import getNotionTextFromUrl from "./parse-url.js";
+
 const router = express.Router();
 
 const openai = new OpenAI({
@@ -24,6 +26,18 @@ router.post("/", async(request, response) => {
     } catch(error) {
         console.error(error)
     };
-})
+});
+
+router.post("/notion-text", async(request, response) => {
+    const {url} = request.body; 
+
+    try {
+        const text = await getNotionTextFromUrl(url); 
+        response.json({ success: true, text});
+    } catch (error) {
+        console.error("failed to fetch or parse Notion page", error);
+        response.status(500).json({ success: false, error: error.message }); 
+    }
+});
 
 export default router;

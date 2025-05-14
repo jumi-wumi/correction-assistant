@@ -2,7 +2,8 @@ import express from "express";
 import cors from "cors"; 
 import dotenv from "dotenv"
 import OpenAI from "openai";
-import correctionRoute from "./routes/correct.js"
+import router from "./routes/correct.js"
+
 
 const app = express(); 
 
@@ -20,7 +21,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // Routes
-app.use("/correct", correctionRoute); 
+app.use("/", router); 
+app
 
 app.listen(process.env.PORT, () => {
     console.log(`Server started on port ${process.env.PORT}`)
