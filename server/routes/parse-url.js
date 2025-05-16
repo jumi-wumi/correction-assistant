@@ -1,28 +1,41 @@
-const getNotionTextFromUrl =  async (url) => {
-    // fetch the content from url from input by user
-    const response = await fetch(url); 
-    // get raw HTML from response 
-    const html = await response.text();
+const getNotionTextFromUrl = async (url) => {
+  const response = await fetch(url);
+  const html = await response.text();
 
-    console.log(html); 
+  // string match method to match against RegExps 
+  const match = html.match(
+    /<script id="__NEXT_DATA__" type="application\/json">(.+?)<\/script>/
+  );
 
-    // jQuery-like parsing. Load HTML into Cheerio
-    const $ = cheerio.load(html);
+  if (!match || match.length < 2) {
+    throw new Error("Failed to find embedded Notion JSON data :(");
+  }
 
-    // select all divs with notion's text class. Cheerio should find nested text
-    const textBlocksFromClass = $("div.notion-selectable"); 
+  const notionData = JSON.parse(match[1]);
 
-    const combinedTextBlocks = textBlocksFromClass 
-    // map over selected elements, extract and trim text
-    .map((i, el) => $(el).text().trim())
-    // convert to normal array
-    .get()
-    // join blocks on new lines
-    .join("\n"); 
+  // Find the nested blocks and recordMap properties, optional chain
+  const recordMap = notionData.props?.pageProps?.recordMap;
 
-    return combinedTextBlocks;
+  if (!recordMap || !recordMap.block) {
+    throw new Error("Failed to find data block in Notion JSON :(");
+  }
+
+  const blocks = recordMap.block;
+  const extractedText = [];
+
+  // get the actual block data from each element with blockId and title if there is 
+  for (const blockId in blocks) {
+    const block = blocks[blockId].value;
+    const title = block?.properties?.title;
+    if (title && Array.isArray(title)) {
+      // join the parts of title arrays that have multiples
+      const text = title.map((t) => t[0].join(""));
+      extractedText.push(text);
+    }
+  }
+  return extractedText.join("\n");
 };
 
-getNotionTextFromUrl()
+getNotionTextFromUrl();
 
 export default getNotionTextFromUrl;
