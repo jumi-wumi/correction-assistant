@@ -36,6 +36,4 @@ const getNotionTextFromUrl = async (url) => {
   return extractedText.join("\n");
 };
 
-getNotionTextFromUrl();
-
 export default getNotionTextFromUrl;
