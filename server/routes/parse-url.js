@@ -1,6 +1,3 @@
-// this file defines functionality to parse text from live Notion pages based on Notion's class names, using Cheerio library
-import * as cheerio from "cheerio"
-
 const getNotionTextFromUrl =  async (url) => {
     // fetch the content from url from input by user
     const response = await fetch(url); 
