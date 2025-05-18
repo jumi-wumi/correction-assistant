@@ -2,18 +2,35 @@ import puppeteer from "puppeteer";
 import { htmlToText } from "html-to-text";
 
 const getTextFromNotion = async (url) => {
+  // launch browser instance in headless mode i.e. no UI
   const browser = await puppeteer.launch({
     headless: "new",
+    // security-related flags
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
 
+  // open a new page
   const page = await browser.newPage();
+
+  // user-agent so Notion hopefully wont detect us
+  await page.setUserAgent(
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36"
+  );
+
+  // set viewport size to help fake real browser
+  await page.setViewport({ width: 1280, height: 800 });
+
+  // go to url
   await page.goto(url, { waitUntil: "networkidle0" });
 
-  // wait for content on Notion page to render
+  // wait for content on Notion page to render in DOM
   await page.waitForSelector(".notion-page-content", { timeout: 10000 });
 
-  const html = await page.$eval(".notion-page-content", (el) => el.innerHTML);
+  // fake delays pls don't detect us mr. Notion
+  await page.waitForTimeout(1000 + Math.floor(Math.random() * 2000));
+
+  // extract inner html from Notions page content element 
+  const html = await page.$eval(".notion-page-content", (el) => el.innerHTML); //!!! This is not robust - class name can change!
   const text = htmlToText(html, {
     wordwrap: false,
     selectors: [
