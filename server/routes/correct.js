@@ -17,28 +17,31 @@ router.post("/correct", async (request, response) => {
   try {
     const modelResponse = await openai.responses.create({
       model: "chatgpt-4o-latest",
+      // maybe change - default if no input || input from UI
       input: `Du är en lärarsassistent. Här är uppgiftsbeskrivningen: "${description}". 
             Här är elevens inlämning: "${assignment}"
             Bedöm detta baserat på: "${prompt}".
             
-            
-            Instruktioner för bedömning:
-            - Kontrollera att alla frågor i uppgiften är besvarade.
-            - Flagga för eventuella faktamässiga fel.
-            - Kontrollera aldrig stavning eller grammatik
-            
-            VIKTIGT: Ge alltid svaret i följande format exakt:
-
-            Alla frågor besvarade: [Ja eller Nej]
-
-            Brister, varningar:  
-            [Lista eventuella brister eller varningar här, eller skriv "Inga brister" om inga finns]
-
-            Förslag på kommentar från läraren:  
-            [Skriv en kort och konstruktiv kommentar som läraren kan använda]
-
-            Bedöm baserat på ovanstående.`,
+       `,
     });
+
+         
+            // Instruktioner för bedömning:
+            // - Kontrollera att alla frågor i uppgiften är besvarade.
+            // - Flagga för eventuella faktamässiga fel.
+            // - Kontrollera aldrig stavning eller grammatik
+            
+            // VIKTIGT: Ge alltid svaret i följande format exakt:
+
+            // Alla frågor besvarade: [Ja eller Nej]
+
+            // Brister, varningar:  
+            // [Lista eventuella brister eller varningar här, eller skriv "Inga brister" om inga finns]
+
+            // Förslag på kommentar från läraren:  
+            // [Skriv en kort och konstruktiv kommentar som läraren kan använda]
+
+            // Bedöm baserat på ovanstående.
 
     response.json(modelResponse);
   } catch (error) {
