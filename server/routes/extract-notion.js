@@ -27,7 +27,7 @@ const getTextFromNotion = async (url) => {
   await page.waitForSelector(".notion-page-content", { timeout: 10000 });
 
   // fake delays pls don't detect us mr. Notion
-  await page.waitForTimeout(1000 + Math.floor(Math.random() * 2000));
+  await new Promise(resolve => setTimeout(resolve, 1000 + Math.floor(Math.random() * 2000)));
 
   // extract inner html from Notions page content element 
   const html = await page.$eval(".notion-page-content", (el) => el.innerHTML); //!!! This is not robust - class name can change!
