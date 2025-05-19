@@ -42,6 +42,7 @@ const getTextFromNotion = async (url) => {
   await browser.close();
   return text;
 };
+export default getTextFromNotion;
 
 // Test
 const notionUrl =
@@ -54,3 +55,4 @@ getTextFromNotion(notionUrl)
   .catch((err) => {
     console.error("Failed to extract Notion text:", err);
   });
+
