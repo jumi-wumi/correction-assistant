@@ -3,7 +3,8 @@ import dotenv from "dotenv";
 dotenv.config();
 import OpenAI from "openai";
 
-import getNotionTextFromUrl from "./parse-url.js";
+// import getNotionTextFromUrl from "./parse-url.js";
+import getNotionTextFromUrl from "./extract-notion.js"
 
 const router = express.Router();
 
