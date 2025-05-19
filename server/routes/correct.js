@@ -11,7 +11,7 @@ const openai = new OpenAI({
     apiKey: process.env.OPEN_AI_KEY
 }); 
 
-router.post("/", async(request, response) => {
+router.post("/correct", async(request, response) => {
     const { prompt, description, assignment} = request.body;
 
     try{
