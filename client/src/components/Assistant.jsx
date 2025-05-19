@@ -14,12 +14,36 @@ const Assistant = () => {
   const [assignment, setAssignment] = useState("");
   // Init state for active request to API
   const [loading, setLoading] = useState(false);
+  const [notionUrl, setNotionUrl] = useState("");
 
   const handleSubmit = async () => {
     // Set active loading when request to is sent
     setLoading(true);
 
     try {
+      let textDescription = description;
+
+      // if there is Notion url, fetch the text
+      if (notionUrl) {
+        const notionResp = await fetch("http://localhost:3000/notion-text", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url: notionUrl }),
+        });
+
+        if (!notionResp.ok) {
+          const text = await notionResp.text();
+          throw new Error(`Notion API error: ${text}`);
+        }
+
+        const notionData = await notionResp.json();
+
+        if (!notionData.success) {
+          throw new Error(notionData.error);
+        }
+        textDescription = notionData.text;
+      }
+
       const response = await fetch("http://localhost:3000/correct", {
         method: "POST",
         headers: {
@@ -27,7 +51,7 @@ const Assistant = () => {
         },
         body: JSON.stringify({
           prompt,
-          description,
+          description: textDescription,
           assignment,
         }),
       });
@@ -55,9 +79,9 @@ const Assistant = () => {
 
       {/* Input for uppgiftsbeskrivning */}
       <textarea
-        placeholder="Uppgiftsbeskrivning?"
-        value={description}
-        onChange={(event) => setDescription(event.target.value)}
+        placeholder="Länk till uppgiftsbeskrivning?"
+        value={notionUrl}
+        onChange={(event) => setNotionUrl(event.target.value)}
       ></textarea>
 
       {/* Input for the assignment */}
