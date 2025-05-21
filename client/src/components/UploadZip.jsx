@@ -2,20 +2,25 @@ import React from "react";
 import { useState } from "react";
 
 const UploadZip = () => {
-  const [studentFile, setStudentFile] = useState(null);
+  // hold the zip file
+  const [file, setFile] = useState(null);
+  // hold parsed data of submissions
+  const [studentFile, setStudentFile] = [];
 
   const handleUpload = async () => {
     // send formData key-value as body
     const formData = new FormData();
-    formData.append("zip", studentFile);
+    formData.append("zip", file);
 
     const response = await fetch("http://localhost:3000/upload", {
       method: "POST",
       body: formData,
     });
 
+    if (!response.ok) throw new Error("Failed to upload");
+
     const data = await response.json();
-    setStudentFile(data); 
+    setStudentFile(data.files);
   };
 
   return (
@@ -23,9 +28,29 @@ const UploadZip = () => {
       <input
         type="file"
         accept=".zip"
-        onChange={(event) => FileSystemFileEntry(event.target.files[0])}
+        onChange={(e) => setFile(e.target.files[0])}
       />
       <button onClick={handleUpload}>Ladda upp inlämningar</button>
+        {studentFile.length > 0 && (
+        <table>
+          <thead>
+            <tr>
+              <th>Filnamn</th>
+              <th>Innehåll</th>
+            </tr>
+          </thead>
+          <tbody>
+            {studentFile.map((file, i) => (
+              <tr key={i}>
+                <td>{file.filename}</td>
+                <td>
+                  <pre>{file.content}</pre>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </>
   );
 };
