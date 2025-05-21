@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv"
 import OpenAI from "openai";
 import router from "./routes/correct.js"
+import uploadRoute from "./routes/upload.js"
 
 
 const app = express(); 
@@ -21,7 +22,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // Routes
-app.use("/", router);
+app.use("/", uploadRoute);
 
 app.listen(process.env.PORT, () => {
     console.log(`Server started on port ${process.env.PORT}`)
