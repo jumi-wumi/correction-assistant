@@ -34,7 +34,7 @@ const UploadZip = () => {
         {studentFile.length > 0 && (
         <table>
           <thead>
-            <tr>s
+            <tr>
               <th>Filnamn</th>
               <th>Innehåll</th>
             </tr>
