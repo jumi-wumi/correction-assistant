@@ -45,14 +45,14 @@ const getTextFromNotion = async (url) => {
 export default getTextFromNotion;
 
 // Test
-const notionUrl =
-  "https://www.notion.so/Teorihandbok-del-1-Avancerad-NET-1b6a11b2b40c80f1b91cf2313cf34c11";
+// const notionUrl =
+//   "https://www.notion.so/Teorihandbok-del-1-Avancerad-NET-1b6a11b2b40c80f1b91cf2313cf34c11";
 
-getTextFromNotion(notionUrl)
-  .then((text) => {
-    console.log(text);
-  })
-  .catch((err) => {
-    console.error("Failed to extract Notion text:", err);
-  });
+// getTextFromNotion(notionUrl)
+//   .then((text) => {
+//     console.log(text);
+//   })
+//   .catch((err) => {
+//     console.error("Failed to extract Notion text:", err);
+//   });
 
