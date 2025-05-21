@@ -5,7 +5,7 @@ const UploadZip = () => {
   // hold the zip file
   const [file, setFile] = useState(null);
   // hold parsed data of submissions
-  const [studentFile, setStudentFile] = [];
+  const [studentFile, setStudentFile] = useState([]);
 
   const handleUpload = async () => {
     // send formData key-value as body
@@ -34,7 +34,7 @@ const UploadZip = () => {
         {studentFile.length > 0 && (
         <table>
           <thead>
-            <tr>
+            <tr>s
               <th>Filnamn</th>
               <th>Innehåll</th>
             </tr>
