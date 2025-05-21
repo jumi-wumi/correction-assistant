@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import './App.css'
-import Assistant from './components/Assistant';
+// import Assistant from './components/Assistant';
+import UploadZip from './components/UploadZip';
 
 function App() {
 
@@ -15,7 +16,8 @@ function App() {
 
   return (
     <>
-    <Assistant />
+    {/* <Assistant /> */}
+    <UploadZip />
     </>
   )
 }
