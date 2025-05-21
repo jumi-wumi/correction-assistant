@@ -6,46 +6,50 @@ import path from "path";
 
 const router = express.Router();
 
-// config Multer to save files from users' upload to uploads/ folder
+// Configure Multer to save uploaded files in /uploads
 const upload = multer({ dest: "uploads/" });
 
-// accept single zip file
 router.post("/upload", upload.single("zip"), async (request, response) => {
   const zipPath = request.file.path;
 
-  // store extracted file content in array
-  const extractedFiles = [];
+  try {
+    // Extract zip and get file contents
+    const extractedFiles = await extractZip(zipPath);
 
-  fs.createReadStream(zipPath)
-    // pipe streamed zip file into unzipper to parse
-    .pipe(unzipper.Parse())
-    .on("entry", async function (entry) {
-      const filename = entry.path;
-      const type = entry.type;
+    // Delete uploaded ZIP file after extraction
+    fs.unlink(zipPath, () => {});
 
-      if (type === "File") {
-        let chunks = [];
-        for await (const chunk of entry) {
-          chunks.push(chunk);
-        }   
-
-        // combine chunks and convert to string
-        const content = Buffer.concat(chunks).toString("utf-8");
-        extractedFiles.push({ filename, content });
-      } else {
-        // inf not a file, e.g. directory, get rid of that shit
-        entry.autodrain();
-      }
-    })
-    // close stream when all entries are processed
-    .on("close", () => {
-    // delete uploaded zip file
-      fs.unlink(zipPath, () => {});
-      response.json({ files: extractedFiles });
-    })
-    .on("error", (err) => {
-      response.status(500).json({ error: "Failed to extract zip" });
-    });
+    // Respond with extracted content
+    response.json({ files: extractedFiles });
+    console.log("Extracted:", extractedFiles);
+  } catch (err) {
+    console.error("Zip extraction failed:", err);
+    response.status(500).json({ error: "Failed to extract zip" });
+  }
 });
+
+// Async helper to extract files
+async function extractZip(zipPath) {
+  const extractedFiles = [];
+  const zipStream = fs.createReadStream(zipPath).pipe(unzipper.Parse());
+
+  for await (const entry of zipStream) {
+    const filename = entry.path;
+    const type = entry.type;
+
+    if (type === "File") {
+      const chunks = [];
+      for await (const chunk of entry) {
+        chunks.push(chunk);
+      }
+      const content = Buffer.concat(chunks).toString("utf-8");
+      extractedFiles.push({ filename, content });
+    } else {
+      entry.autodrain();
+    }
+  }
+
+  return extractedFiles;
+}
 
 export default router;
