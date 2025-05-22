@@ -4,9 +4,9 @@ const FolderUpload = () => {
   const [files, setFiles] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [selectedFileUrl, setSelectedFileUrl] = useState(null);
-  
+
   const [notionUrl, setNotionUrl] = useState("");
-  const [showModal, setShowModal] = useState(false); 
+  const [showModal, setShowModal] = useState(false);
   const [assessmentResults, setAssessmentResults] = useState({});
 
   const handleFileChange = (event) => {
@@ -51,6 +51,12 @@ const FolderUpload = () => {
             <thead>
               <tr>
                 <th>Filename</th>
+                <th
+                  onClick={() => setShowModal(true)}
+                  style={{ cursor: "pointer" }}
+                >
+                  Alla frågor besvarade?
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -61,6 +67,7 @@ const FolderUpload = () => {
                       {file.filename}
                     </button>
                   </td>
+                  <td>{assessmentResults[file.filename] ?? "Ej bedömd"}</td>
                 </tr>
               ))}
             </tbody>
@@ -76,6 +83,29 @@ const FolderUpload = () => {
             </div>
           )}
         </>
+      )}
+
+      {showModal && (
+        <div className="modal-container">
+          <div className="modal">
+            <h3>Länk till uppgiftsbeskrivningen (Notion):</h3>
+            <input
+              type="text"
+              placeholder="https://www.notion.so..."
+              value={notionUrl}
+              onChange={(event) => setNotionUrl(event.target.value)}
+            />
+            <button
+              onClick={async () => {
+                await assessAllFiles();
+                setShowModal(false);
+              }}
+            >
+              Kör
+            </button>
+            <button onClick={() => setShowModal(false)}>Stahp</button>
+          </div>
+        </div>
       )}
     </>
   );
