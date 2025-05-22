@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { use, useState } from "react";
 
 const FolderUpload = () => {
   const [files, setFiles] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [selectedFileUrl, setSelectedFileUrl] = useState(null);
 
   const handleFileChange = (event) => {
     setFiles(event.target.files);
@@ -35,30 +36,42 @@ const FolderUpload = () => {
         webkitdirectory="true"
         directory="true"
         multiple
-        onChange={(e) => setFiles(e.target.files)}
+        onChange={handleFileChange}
       />
 
       <button onClick={handleUpload}>Upload Files</button>
 
       {uploadedFiles.length > 0 && (
-        <table>
-          <thead>
-            <tr>
-              <th>Filename</th>
-              {/* <th>Content</th> */}
-            </tr>
-          </thead>
-          <tbody>
-            {uploadedFiles.map((file, idx) => (
-              <tr key={idx}>
-                <td>{file.filename}</td>
-                {/* <td>
-                  <pre>{file.content}</pre>
-                </td> */}
+        <>
+          <table>
+            <thead>
+              <tr>
+                <th>Filename</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {uploadedFiles.map((file, idx) => (
+                <tr key={idx}>
+                  <td>
+                    <button onClick={() => setSelectedFileUrl(file.url)}>
+                      {file.filename}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {selectedFileUrl && (
+            <div style={{ width: "100%", height: "80vh", marginTop: "1rem" }}>
+              <iframe
+                src={`http://localhost:3000${selectedFileUrl}`}
+                style={{ width: "100%", height: "100%", border: "none" }}
+                title="PDF Viewer"
+              />
+            </div>
+          )}
+        </>
       )}
     </>
   );
