@@ -4,7 +4,7 @@ import dotenv from "dotenv"
 import OpenAI from "openai";
 // import router from "./routes/correct.js"
 // import uploadRoute from "./routes/upload.js"
-import router from "./routes/upload-unzipped.js"
+import uploadRoute from "./routes/upload-unzipped.js"
 
 
 const app = express(); 
@@ -22,8 +22,11 @@ const corsOptions = {
 // Pass options to only accept from the Vite origin for now
 app.use(cors(corsOptions));
 
+// serve static files
+app.use("/uploads", express.static(path.resolve("uploads")));
+
 // Routes
-app.use("/", router);
+app.use("/", uploadRoute);
 
 app.listen(process.env.PORT, () => {
     console.log(`Server started on port ${process.env.PORT}`)
