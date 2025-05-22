@@ -1,9 +1,13 @@
-import { use, useState } from "react";
+import { useState } from "react";
 
 const FolderUpload = () => {
   const [files, setFiles] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [selectedFileUrl, setSelectedFileUrl] = useState(null);
+  
+  const [notionUrl, setNotionUrl] = useState("");
+  const [showModal, setShowModal] = useState(false); 
+  const [assessmentResults, setAssessmentResults] = useState({});
 
   const handleFileChange = (event) => {
     setFiles(event.target.files);
