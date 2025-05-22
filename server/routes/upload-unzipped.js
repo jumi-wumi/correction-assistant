@@ -1,30 +1,38 @@
-import express, { response } from "express"; 
+import express from "express"; 
 import multer from "multer";
 import fs from "fs/promises"
+import path from "path";
 
 const router = express.Router(); 
-const upload = multer({ dest: "uploads/" }); 
 
-router.post("/upload-from-folder", upload.array("files"), async (req, res) => {
+const fileStorage = multer.diskStorage({
+  destination: (request, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (request, file, cb) => {
+    const extension = path.extname(file.originalname);
+    cb(null, `${file.filename}${extension}`); 
+  }
+});
+
+const upload = multer({ fileStorage }); 
+
+
+router.post("/upload-from-folder", upload.array("files"), async (request, response) => {
   try {
-    // req.files is an array of uploaded files
-    const uploadedFiles = await Promise.all(
-      req.files.map(async (file) => {
-        const content = await fs.readFile(file.path, "utf-8");
-        // Delete the temp file
-        await fs.unlink(file.path);
-        return {
-          filename: file.originalname,
-          url: `/uploads/${file.filename}`,
-        };
-      })
-    );
+    const uploadedFiles = request.files.map((file) => {
+      return {
+        filename: file.originalname,
+        url: `/uploads/${file.filename}`,
+      };
+    });
 
-    res.json({ files: uploadedFiles });
+    response.json({ files: uploadedFiles });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "File processing failed" });
+    response.status(500).json({ error: "File processing failed" });
   }
-} )
+});
+
 
 export default router

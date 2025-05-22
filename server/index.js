@@ -24,7 +24,15 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // serve static files
-app.use("/uploads", express.static(path.resolve("uploads")));
+app.use('/uploads', express.static('uploads', {
+  setHeaders: (response, path) => {
+    if (path.endsWith('.pdf')) {
+      // Tell browser to display inline (not download)
+      response.setHeader('Content-Disposition', 'inline');
+      response.setHeader('Content-Type', 'application/pdf');
+    }
+  }
+}));
 
 // Routes
 app.use("/", uploadRoute);
