@@ -15,7 +15,7 @@ router.post("/upload-from-folder", upload.array("files"), async (req, res) => {
         await fs.unlink(file.path);
         return {
           filename: file.originalname,
-          content,
+          url: `/uploads/${file.filename}`,
         };
       })
     );
