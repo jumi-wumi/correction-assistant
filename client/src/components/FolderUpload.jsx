@@ -45,16 +45,16 @@ const FolderUpload = () => {
           <thead>
             <tr>
               <th>Filename</th>
-              <th>Content</th>
+              {/* <th>Content</th> */}
             </tr>
           </thead>
           <tbody>
             {uploadedFiles.map((file, idx) => (
               <tr key={idx}>
                 <td>{file.filename}</td>
-                <td>
+                {/* <td>
                   <pre>{file.content}</pre>
-                </td>
+                </td> */}
               </tr>
             ))}
           </tbody>
