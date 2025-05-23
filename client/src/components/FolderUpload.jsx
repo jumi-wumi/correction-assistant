@@ -55,7 +55,7 @@ const FolderUpload = () => {
                   onClick={() => setShowModal(true)}
                   style={{ cursor: "pointer" }}
                 >
-                  Alla frågor besvarade?
+                  Kontrollera: är alla frågor besvarade?
                 </th>
               </tr>
             </thead>
