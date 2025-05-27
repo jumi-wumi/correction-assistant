@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { assistant } from "./Assistant";
 
 const FolderUpload = () => {
   const [files, setFiles] = useState([]);
@@ -97,7 +98,26 @@ const FolderUpload = () => {
             />
             <button
               onClick={async () => {
-                await assessAllFiles();
+                for (const file of files) {
+                  const textResponse = await fetch(
+                    `http://localhost:3000/extract-text?file=${encodeURIComponent(
+                      file.filename
+                    )}`
+                  );
+                  const textData = await textResponse.json();
+                  const assignmentText = textData.text;
+
+                  const result = await assistant({
+                    assignment: assignmentText,
+                    notionUrl: notionUrl,
+                    prompt: "Kontrollera endast om alla G-nivå frågor är besvarade."
+                  });
+
+                  setAssessmentResults((prev) => ({
+                    ...prev,
+                    [file.filename]: result,
+                  }));
+                }
                 setShowModal(false);
               }}
             >
