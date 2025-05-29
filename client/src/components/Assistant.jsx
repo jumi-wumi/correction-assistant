@@ -41,6 +41,8 @@ export const assistant = async({
 
       const data = await response.json();
       console.log("Response:", data);
+      console.log("Raw /correct response:", data);
+
      return data.output[0]?.content[0]?.text;
     } catch (error) {
       console.error(error);

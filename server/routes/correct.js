@@ -12,36 +12,33 @@ const openai = new OpenAI({
 });
 
 router.post("/correct", async (request, response) => {
-  const { prompt, description, assignment } = request.body;
+  const { description, assignment } = request.body;
 
   try {
     const modelResponse = await openai.responses.create({
-      model: "chatgpt-4o-latest",
+      model: "gpt-3.5-turbo",
       // maybe change - default if no input || input from UI
-      input: `Du är en lärarsassistent. Här är uppgiftsbeskrivningen: "${description}". 
+      input: prompt || `Kontrollera endast om alla G-nivå frågor är besvarade. Ge output i formatet: om alla frågor är besvarade ✅. Om inte: [antal frågor besvarade]/[antal totala frågor]. Detta är uppgiftsbeskrivningen: "${description}". 
             Här är elevens inlämning: "${assignment}"
-            Bedöm detta baserat på: "${prompt}".
-            
        `,
     });
 
-         
-            // Instruktioner för bedömning:
-            // - Kontrollera att alla frågor i uppgiften är besvarade.
-            // - Flagga för eventuella faktamässiga fel.
-            // - Kontrollera aldrig stavning eller grammatik
-            
-            // VIKTIGT: Ge alltid svaret i följande format exakt:
+    // Instruktioner för bedömning:
+    // - Kontrollera att alla frågor i uppgiften är besvarade.
+    // - Flagga för eventuella faktamässiga fel.
+    // - Kontrollera aldrig stavning eller grammatik
 
-            // Alla frågor besvarade: [Ja eller Nej]
+    // VIKTIGT: Ge alltid svaret i följande format exakt:
 
-            // Brister, varningar:  
-            // [Lista eventuella brister eller varningar här, eller skriv "Inga brister" om inga finns]
+    // Alla frågor besvarade: [Ja eller Nej]
 
-            // Förslag på kommentar från läraren:  
-            // [Skriv en kort och konstruktiv kommentar som läraren kan använda]
+    // Brister, varningar:
+    // [Lista eventuella brister eller varningar här, eller skriv "Inga brister" om inga finns]
 
-            // Bedöm baserat på ovanstående.
+    // Förslag på kommentar från läraren:
+    // [Skriv en kort och konstruktiv kommentar som läraren kan använda]
+
+    // Bedöm baserat på ovanstående.
 
     response.json(modelResponse);
   } catch (error) {

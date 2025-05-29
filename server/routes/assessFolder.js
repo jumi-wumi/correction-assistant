@@ -42,21 +42,19 @@ router.post("/assess-folder", upload.array("files"), async(request, response) =>
                     file: fileStream,
                     purpose: "assistants"
                 });
+                console.log(file);
 
                 const fileId = uploadedFile.id;
 
                 //the input for the api
                 const inputText = `${prompt || "Kontrollera endast om alla G-nivå frågor är besvarade."}${
-          notionText ? `\n\nAssignment Description:\n${notionText}` : ""
-        }\n\nFile ID: ${fileId}`;
+                notionText ? `\n\nAssignment Description:\n${notionText}` : ""
+                }\n\nFile ID: ${fileId}`;
 
         // sned to responses api
         const responseData = await openai.responses.create({
             model: "gpt-3.5-turbo",
             input: inputText,
-            file_ids: [fileId],
-            max_tokens: 1000,
-            temperature: 0.1
         });
 
         const assessment = responseData.output?.[0]?.content?.[0]?.text;
