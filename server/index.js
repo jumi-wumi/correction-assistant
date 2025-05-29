@@ -6,7 +6,11 @@ import path from "path"
 // import router from "./routes/correct.js"
 // import uploadRoute from "./routes/upload.js"
 import uploadRoute from "./routes/upload-unzipped.js"
+import assessRoute from "./routes/assessFolder.js"
 
+// Debug: Log when routes are imported
+console.log("Upload route imported:", typeof uploadRoute);
+console.log("Assess route imported:", typeof assessRoute);
 
 const app = express(); 
 
@@ -36,6 +40,8 @@ app.use('/uploads', express.static('uploads', {
 
 // Routes
 app.use("/", uploadRoute);
+app.use("/", assessRoute);
+
 
 app.listen(process.env.PORT, () => {
     console.log(`Server started on port ${process.env.PORT}`)
