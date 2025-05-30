@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@mozilla/readability": "^0.6.0",
+    "afpp": "^1.7.0",
     "jsdom": "^26.1.0"
   }
 }

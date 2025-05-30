@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 import OpenAI from "openai"
 import getTextFromNotion from "./extract-notion.js"
 
+
 dotenv.config();
 
 const router = express.Router();
