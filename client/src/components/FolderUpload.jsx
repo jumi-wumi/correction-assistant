@@ -64,7 +64,6 @@ const FolderUpload = () => {
     });
 
     // Add assessment parameters
-    formData.append("prompt", "Kontrollera endast om alla G-nivå frågor är besvarade.");
     if (notionUrl) {
       formData.append("notionUrl", notionUrl);
       console.log("Added Notion URL:", notionUrl);
