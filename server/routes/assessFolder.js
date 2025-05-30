@@ -22,7 +22,7 @@ router.post(
   "/assess-folder",
   upload.array("files"),
   async (request, response) => {
-    const { prompt, notionUrl } = request.body;
+    const { notionUrl } = request.body;
 
     try {
       const results = [];
