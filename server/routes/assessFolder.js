@@ -37,7 +37,10 @@ router.post(
         }
       }
 
-      // go through and process each file
+      const extractedFiles = [];
+
+      // extracting text from files first 
+      console.log("extracting text from files...");
       for (const file of request.files) {
         try {
           let extractedText = "";
@@ -47,7 +50,6 @@ router.post(
             file.mimetype === "application/pdf" ||
             path.extname(file.originalname).toLowerCase() === ".pdf"
           ) {
-
             try {
               // read file buffer
               const buffer = fs.readFileSync(file.path);
@@ -62,40 +64,57 @@ router.post(
             }
           }
 
-          const fixedPrompt = `Kontrollera endast om alla G-nivå frågor är besvarade. Ge output i formatet: om alla frågor är besvarade ✅. Om inte: [antal frågor besvarade]/[antal totala frågor]. Detta är uppgiftsbeskrivningen: "${
-            notionText || "Ingen uppgiftsbeskrivning tillgänglig"
-          }". 
-            Här är elevens inlämning: "${extractedText}", Fil: ${file.originalname}. `;
-
-          // upload to openAI
-          const fileStream = fs.createReadStream(file.path);
-          const uploadedFile = await openai.files.create({
-            file: fileStream,
-            purpose: "assistants",
-          });
-
-          // sned to responses api
-          const responseData = await openai.responses.create({
-            model: "gpt-4.1-nano",
-            input: fixedPrompt,
-          });
-
-          const assessment = responseData.output?.[0]?.content?.[0]?.text;
-
-          results.push({
-            filename: file.originalname,
-            fileId: null,
-            assessment: assessment,
-          });
-        } catch (error) {
-          console.error(error);
-          results.push({
-            filename: file.originalname,
-            fileId: null,
-            assessment: "error vid bedömning",
+          extractedFiles.push({ file, extractedText });
+        } catch (pdfError) {
+          console.error("PDF extraction error:", pdfError);
+          extractedFiles.push({
+            file,
+            extractedText: "Failed to extract text from PDF: " + pdfError.message,
           });
         }
       }
+
+      console.log("text extraction complete for all files")
+
+      // go through and process each file
+      for (const { file, extractedText } of extractedFiles) {
+        const fixedPrompt = `Kontrollera endast om alla G-nivå frågor är besvarade. Ge output i formatet: om alla frågor är besvarade ✅. Om inte: [antal frågor besvarade]/[antal totala frågor]. Detta är uppgiftsbeskrivningen: "${
+          notionText || "Ingen uppgiftsbeskrivning tillgänglig"
+        }". 
+            Här är elevens inlämning: "${extractedText}", Fil: ${file.originalname}. `;
+
+        // upload to openAI
+        const fileStream = fs.createReadStream(file.path);
+        const uploadedFile = await openai.files.create({
+          file: fileStream,
+          purpose: "assistants",
+        });
+
+        // sned to responses api
+        const responseData = await openai.responses.create({
+          model: "gpt-4.1-nano",
+          input: fixedPrompt,
+        });
+
+        const assessment = responseData.output?.[0]?.content?.[0]?.text;
+
+        results.push({
+          filename: file.originalname,
+          fileId: null,
+          assessment: assessment,
+        });
+      }
+
+      // clean up files
+      console.log("Cleaning up files");
+      if (request.files) {
+        request.files.forEach((file) => {
+          if (fs.existsSync(file.path)) {
+            fs.unlinkSync(file.path);
+          }
+        });
+      }
+
       response.json({ results });
     } catch (error) {
       console.log(error);
