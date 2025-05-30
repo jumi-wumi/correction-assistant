@@ -47,6 +47,8 @@ router.post(
             file.mimetype === "application/pdf" ||
             path.extname(file.originalname).toLowerCase() === ".pdf"
           ) {
+            console.log("Processing as PDF...");
+
             try {
               // read file buffer
               const buffer = fs.readFileSync(file.path);
@@ -55,11 +57,13 @@ router.post(
 
               // join pages into one string
               extractedText = textPages.join("\n\n--- Page Break ---\n\n");
-
             } catch (error) {
+              console.error("PDF extraction error:", pdfError);
               extractedText = "Failed to extract text from PDF";
             }
           }
+
+          console.log("Preparing API call...");
 
           // upload to openAI
           const fileStream = fs.createReadStream(file.path);
@@ -104,6 +108,7 @@ router.post(
       console.log(error);
 
       // clean up files
+      console.log("Cleaning up files");
       if (request.files) {
         request.files.forEach((file) => {
           if (fs.existsSync(file.path)) {
