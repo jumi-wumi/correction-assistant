@@ -65,6 +65,11 @@ router.post(
 
           console.log("Preparing API call...");
 
+          const fixedPrompt = `Kontrollera endast om alla G-nivå frågor är besvarade. Ge output i formatet: om alla frågor är besvarade ✅. Om inte: [antal frågor besvarade]/[antal totala frågor]. Detta är uppgiftsbeskrivningen: "${
+            notionText || "Ingen uppgiftsbeskrivning tillgänglig"
+          }". 
+            Här är elevens inlämning: "${extractedText}", Fil: ${file.originalname}. `;
+
           // upload to openAI
           const fileStream = fs.createReadStream(file.path);
           const uploadedFile = await openai.files.create({
@@ -72,19 +77,10 @@ router.post(
             purpose: "assistants",
           });
 
-          const fileId = uploadedFile.id;
-
-          //the input for the api
-          const inputText = `${
-            prompt || "Kontrollera endast om alla G-nivå frågor är besvarade."
-          }${
-            notionText ? `\n\nAssignment Description:\n${notionText}` : ""
-          }\n\nFile: ${file.originalname}\n\nContent:\n${extractedText}`;
-
           // sned to responses api
           const responseData = await openai.responses.create({
             model: "gpt-4.1-nano",
-            input: inputText,
+            input: fixedPrompt,
           });
 
           const assessment = responseData.output?.[0]?.content?.[0]?.text;
