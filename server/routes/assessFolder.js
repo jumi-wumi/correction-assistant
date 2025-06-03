@@ -39,7 +39,7 @@ router.post(
 
       const extractedFiles = [];
 
-      // extracting text from files first 
+      // extracting text from files first
       console.log("extracting text from files...");
       for (const file of request.files) {
         try {
@@ -58,8 +58,10 @@ router.post(
 
               // join pages into one string
               extractedText = textPages.join("\n\n--- Page Break ---\n\n");
+
+              console.log(extractedText);
             } catch (error) {
-              console.error("PDF extraction error:", pdfError);
+              console.error("PDF extraction error:", error);
               extractedText = "Failed to extract text from PDF";
             }
           }
@@ -69,39 +71,42 @@ router.post(
           console.error("PDF extraction error:", pdfError);
           extractedFiles.push({
             file,
-            extractedText: "Failed to extract text from PDF: " + pdfError.message,
+            extractedText:
+              "Failed to extract text from PDF: " + pdfError.message,
           });
         }
       }
 
-      console.log("text extraction complete for all files")
+      console.log("text extraction complete for all files");
 
       // go through and process each file
       for (const { file, extractedText } of extractedFiles) {
         const fixedPrompt = `Kontrollera endast om alla G-nivå frågor är besvarade. Ge output i formatet: om alla frågor är besvarade ✅. Om inte: [antal frågor besvarade]/[antal totala frågor]. Detta är uppgiftsbeskrivningen: "${
           notionText || "Ingen uppgiftsbeskrivning tillgänglig"
         }". 
-            Här är elevens inlämning: "${extractedText}", Fil: ${file.originalname}. `;
+            Här är elevens inlämning: "${extractedText}", Fil: ${
+          file.originalname
+        }. `;
 
-        // upload to openAI
-        const fileStream = fs.createReadStream(file.path);
-        const uploadedFile = await openai.files.create({
-          file: fileStream,
-          purpose: "assistants",
-        });
+        // // upload to openAI
+        // const fileStream = fs.createReadStream(file.path);
+        // const uploadedFile = await openai.files.create({
+        //   file: fileStream,
+        //   purpose: "assistants",
+        // });
 
-        // sned to responses api
-        const responseData = await openai.responses.create({
-          model: "gpt-4.1-nano",
-          input: fixedPrompt,
-        });
+        // // sned to responses api
+        // const responseData = await openai.responses.create({
+        //   model: "gpt-4.1-nano",
+        //   input: fixedPrompt,
+        // });
 
-        const assessment = responseData.output?.[0]?.content?.[0]?.text;
+        // const assessment = responseData.output?.[0]?.content?.[0]?.text;
 
         results.push({
           filename: file.originalname,
           fileId: null,
-          assessment: assessment,
+          assessment: "skip api call",
         });
       }
 
