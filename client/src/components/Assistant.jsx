@@ -1,9 +1,10 @@
+// Helper function 
 export const assistant = async({
   assignment,
   notionUrl,
-  prompt
 }) => {
     try {
+      // The text extracted from Notion
       let textDescription = "";
 
       // if there is Notion url, fetch the text
@@ -19,6 +20,7 @@ export const assistant = async({
           throw new Error(`Notion API error: ${text}`);
         }
 
+        // parse the response 
         const notionData = await notionResp.json();
 
         if (!notionData.success) {
@@ -27,22 +29,24 @@ export const assistant = async({
         textDescription = notionData.text;
       }
 
+      // send post request to /correct with the extracted text 
       const response = await fetch("http://localhost:3000/correct", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          prompt,
           description: textDescription,
           assignment,
         }),
       });
 
+      // parse response from /correct
       const data = await response.json();
+      // log response data for debugging
       console.log("Response:", data);
-      console.log("Raw /correct response:", data);
 
+      // return the corrected text
      return data.output[0]?.content[0]?.text;
     } catch (error) {
       console.error(error);
