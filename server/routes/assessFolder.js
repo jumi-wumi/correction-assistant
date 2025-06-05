@@ -88,25 +88,25 @@ router.post(
           file.originalname
         }. `;
 
-        // // upload to openAI
-        // const fileStream = fs.createReadStream(file.path);
-        // const uploadedFile = await openai.files.create({
-        //   file: fileStream,
-        //   purpose: "assistants",
-        // });
+        // upload to openAI
+        const fileStream = fs.createReadStream(file.path);
+        const uploadedFile = await openai.files.create({
+          file: fileStream,
+          purpose: "assistants",
+        });
 
-        // // sned to responses api
-        // const responseData = await openai.responses.create({
-        //   model: "gpt-4.1-nano",
-        //   input: fixedPrompt,
-        // });
+        // sned to responses api
+        const responseData = await openai.responses.create({
+          model: "gpt-4.1-nano",
+          input: fixedPrompt,
+        });
 
-        // const assessment = responseData.output?.[0]?.content?.[0]?.text;
+        const assessment = responseData.output?.[0]?.content?.[0]?.text;
 
         results.push({
           filename: file.originalname,
-          fileId: null,
-          assessment: "skip api call",
+          fileId: uploadedFile.id,
+          assessment,
         });
       }
 
