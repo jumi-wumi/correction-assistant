@@ -2,141 +2,52 @@
 import { useState } from "react";
 import FileUpload from "./FileUpload";
 import FileList from "./FileList";
+import AssessmentModal from "./AssessmentModal";
 
 const FolderUpload = () => {
   // state for storing the uploaded files
   const [files, setFiles] = useState([]);
-  // state for the info about the files 
+  // state for the info about the files
   const [uploadedFiles, setUploadedFiles] = useState([]);
   // state for file url if selected to view
   const [selectedFileUrl, setSelectedFileUrl] = useState(null);
   // state for notion URL
   const [notionUrl, setNotionUrl] = useState("");
-  // state to toggle modal visibility 
+  // state to toggle modal visibility
   const [showModal, setShowModal] = useState(false);
-  // state to store the results from assessment 
+  // state to store the results from assessment
   const [assessmentResults, setAssessmentResults] = useState({});
   // state to track if an assessment is in progress
   const [isAssessing, setIsAssessing] = useState(false);
 
-
-
-
-
-  const handleAssessment = async () => {
-    if (!files || files.length === 0) {
-      alert("Please select files first");
-      return;
-    }
-
-    setIsAssessing(true);
-    console.log("Starting assessment...");
-    
-    const formData = new FormData();
-
-    // Add files to form data - use the original files, not uploadedFiles
-    files.forEach((file, index) => {
-      formData.append("files", file);
-      console.log(`Added file ${index}: ${file.name}`);
-    });
-
-    // Add assessment parameters
-    if (notionUrl) {
-      formData.append("notionUrl", notionUrl);
-      console.log("Added Notion URL:", notionUrl);
-    }
-
-    try {
-      console.log("Sending request to /assess-folder");
-      const response = await fetch("http://localhost:3000/assess-folder", {
-        method: "POST",
-        body: formData,
-      });
-
-      console.log("Response status:", response.status);
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Error response:", errorText);
-        throw new Error(`Assessment failed: ${response.status} - ${errorText}`);
-      }
-
-      const data = await response.json();
-      console.log("Assessment data received:", data);
-      
-      // Update assessment results using the original file names
-      const newResults = {};
-      data.results.forEach(result => {
-        newResults[result.filename] = result.assessment;
-      });
-      
-      setAssessmentResults(newResults);
-      setShowModal(false);
-
-    } catch (error) {
-      console.error("Assessment error:", error);
-      alert("Assessment failed: " + error.message);
-    } finally {
-      setIsAssessing(false);
-    }
-  };
-
   return (
     <>
-    <FileUpload
-    files={files}
-    setFiles={setFiles}
-    setUploadedFiles={setUploadedFiles}
-    />
+      <FileUpload
+        files={files}
+        setFiles={setFiles}
+        setUploadedFiles={setUploadedFiles}
+      />
 
-    <FileList 
-    uploadedFiles={uploadedFiles}
-    assessmentResults={assessmentResults}
-    setShowModal={setShowModal}
-    setSelectedFileUrl={setSelectedFileUrl}
-    selectedFileUrl={selectedFileUrl}
-    />
+      <FileList
+        uploadedFiles={uploadedFiles}
+        assessmentResults={assessmentResults}
+        setShowModal={setShowModal}
+        setSelectedFileUrl={setSelectedFileUrl}
+        selectedFileUrl={selectedFileUrl}
+      />
+
+      {showModal && (
+        <AssessmentModal
+          files={files}
+          notionUrl={notionUrl}
+          setNotionUrl={setNotionUrl}
+          setAssessmentResults={setAssessmentResults}
+          setIsAssessing={setIsAssessing}
+          isAssessing={isAssessing}
+          setShowModal={setShowModal}
+        />
+      )}
     </>
-
-
-
-    //   {showModal && (
-    //     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    //       <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
-    //         <h3 className="text-lg font-semibold mb-4">
-    //           Länk till uppgiftsbeskrivningen (Notion):
-    //         </h3>
-    //         <input
-    //           type="text"
-    //           placeholder="https://www.notion.so..."
-    //           value={notionUrl}
-    //           onChange={(event) => setNotionUrl(event.target.value)}
-    //           className="w-full p-2 border border-gray-300 rounded mb-4"
-    //         />
-    //         <div className="flex gap-2">
-    //           <button
-    //             onClick={handleAssessment}
-    //             disabled={isAssessing}
-    //             className={`px-4 py-2 rounded text-white ${
-    //               isAssessing 
-    //                 ? 'bg-gray-400 cursor-not-allowed' 
-    //                 : 'bg-green-500 hover:bg-green-600'
-    //             }`}
-    //           >
-    //             {isAssessing ? 'Bearbetar...' : 'Kör'}
-    //           </button>
-    //           <button 
-    //             onClick={() => setShowModal(false)}
-    //             disabled={isAssessing}
-    //             className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 disabled:bg-gray-400"
-    //           >
-    //             Stäng
-    //           </button>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   )}
-    // </div>
   );
 };
 
