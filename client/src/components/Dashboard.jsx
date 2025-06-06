@@ -4,7 +4,7 @@ import FileUpload from "./FileUpload";
 import FileList from "./FileList";
 import AssessmentModal from "./AssessmentModal";
 
-const FolderUpload = () => {
+const Dashboard = () => {
   // state for storing the uploaded files
   const [files, setFiles] = useState([]);
   // state for the info about the files
@@ -51,4 +51,4 @@ const FolderUpload = () => {
   );
 };
 
-export default FolderUpload;
+export default Dashboard;
