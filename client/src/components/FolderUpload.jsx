@@ -1,6 +1,7 @@
 // This is the parent container
 import { useState } from "react";
 import FileUpload from "./FileUpload";
+import FileList from "./FileList";
 
 const FolderUpload = () => {
   // state for storing the uploaded files
@@ -87,70 +88,17 @@ const FolderUpload = () => {
     setFiles={setFiles}
     setUploadedFiles={setUploadedFiles}
     />
+
+    <FileList 
+    uploadedFiles={uploadedFiles}
+    assessmentResults={assessmentResults}
+    setShowModal={setShowModal}
+    setSelectedFileUrl={setSelectedFileUrl}
+    selectedFileUrl={selectedFileUrl}
+    />
     </>
 
-    // <div className="p-6 max-w-6xl mx-auto">
-    //   <div className="mb-6">
-    //     <input
-    //       type="file"
-    //       webkitdirectory="true"
-    //       directory="true"
-    //       multiple
-    //       onChange={handleFileChange}
-    //       className="mb-4 p-2 border border-gray-300 rounded"
-    //     />
-    //     <button 
-    //       onClick={handleUpload}
-    //       className="ml-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-    //     >
-    //       Upload Files
-    //     </button>
-    //   </div>
 
-    //   {uploadedFiles.length > 0 && (
-    //     <div className="mb-6">
-    //       <table className="w-full border-collapse border border-gray-300">
-    //         <thead>
-    //           <tr className="bg-gray-100">
-    //             <th className="border border-gray-300 p-2 text-left">Filename</th>
-    //             <th 
-    //               onClick={() => setShowModal(true)}
-    //               className="border border-gray-300 p-2 text-left cursor-pointer hover:bg-gray-200"
-    //             >
-    //               Kontrollera: är alla frågor bajsade?
-    //             </th>
-    //           </tr>
-    //         </thead>
-    //         <tbody>
-    //           {uploadedFiles.map((file, idx) => (
-    //             <tr key={idx} className="hover:bg-gray-50">
-    //               <td className="border border-gray-300 p-2">
-    //                 <button 
-    //                   onClick={() => setSelectedFileUrl(file.url)}
-    //                   className="text-blue-500 hover:text-blue-700 underline"
-    //                 >
-    //                   {file.filename}
-    //                 </button>
-    //               </td>
-    //               <td className="border border-gray-300 p-2">
-    //                 {assessmentResults[file.filename] ?? "Ej bedömd"}
-    //               </td>
-    //             </tr>
-    //           ))}
-    //         </tbody>
-    //       </table>
-
-    //       {selectedFileUrl && (
-    //         <div className="mt-4 w-full h-96 border border-gray-300 rounded">
-    //           <iframe
-    //             src={`http://localhost:3000${selectedFileUrl}`}
-    //             className="w-full h-full border-none rounded"
-    //             title="PDF Viewer"
-    //           />
-    //         </div>
-    //       )}
-    //     </div>
-    //   )}
 
     //   {showModal && (
     //     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
