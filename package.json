@@ -1,7 +1,9 @@
 {
   "dependencies": {
     "@mozilla/readability": "^0.6.0",
+    "@tailwindcss/vite": "^4.1.8",
     "afpp": "^1.7.0",
-    "jsdom": "^26.1.0"
+    "jsdom": "^26.1.0",
+    "tailwindcss": "^4.1.8"
   }
 }
