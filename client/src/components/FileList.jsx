@@ -13,7 +13,7 @@ const FileList = ({
         <div className="table-container">
           <div className="table-header-container">
             <h2>Uppladdade files</h2>
-            <button onClick={() => (setShowModal = true)}>
+            <button onClick={() => setShowModal(true)}>
               Kontrollera alla filer
             </button>
           </div>
