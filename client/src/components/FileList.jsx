@@ -8,39 +8,43 @@ const FileList = ({
   selectedFileUrl,
 }) => {
   return (
-    <div className="file-list">
+    <div className="bg-white p-6 rounded-xl shadow-md">
       {uploadedFiles.length > 0 && (
-        <div className="table-container">
-          <div className="table-header-container">
-            <h2>Uppladdade files</h2>
-            <button onClick={() => setShowModal(true)}>
+        <div>
+          <div className="flex justify-between p-4">
+            <h2 className="text-xl font-semibold">Uppladdade filer</h2>
+            <button
+              onClick={() => setShowModal(true)}
+              className="text-sm bg-blue text-white px-4 py-2 rounded-lg hover:bg-blue/90 cursor-pointer"
+            >
               Kontrollera alla filer
             </button>
           </div>
 
-          <table className="main-table">
+          <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="file-name-row">
-                <th>Filnamn</th>
-                <th>Kontroll</th>
+              <tr className="bg-blue text-white text-sm">
+                <th className="px-4 py-3">Filnamn</th>
+                <th className="px-4 py-3">Kontroll</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-brown/10">
               {uploadedFiles.map((file, idx) => {
                 const isSelected = selectedFileUrl === file.url;
                 return (
                   <>
                     <tr key={`row-${idx}`}>
-                      <td className="files-data">
+                      <td className="px-4 py-3">
                         <button
                           onClick={() =>
                             setSelectedFileUrl(isSelected ? null : file.url)
                           }
+                          className="text-blue hover:underline"
                         >
                           {file.filename}
                         </button>
                       </td>
-                      <td className="asses-data">
+                      <td className="px-4 py-3 text-sm">
                         {assessmentResults[file.filename] ?? "Ej bedömd"}
                       </td>
                     </tr>

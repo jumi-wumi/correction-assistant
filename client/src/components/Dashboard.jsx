@@ -21,33 +21,39 @@ const Dashboard = () => {
   const [isAssessing, setIsAssessing] = useState(false);
 
   return (
-    <>
-      <FileUpload
-        files={files}
-        setFiles={setFiles}
-        setUploadedFiles={setUploadedFiles}
-      />
+    <div className="min-h-screen bg-white text-brown font-main p-6 ">
+      <header className="mb-8">
+        <h1 className="text-4xl font-bold text-blue">qlok bok snok</h1>
+      </header>
 
-      <FileList
-        uploadedFiles={uploadedFiles}
-        assessmentResults={assessmentResults}
-        setShowModal={setShowModal}
-        setSelectedFileUrl={setSelectedFileUrl}
-        selectedFileUrl={selectedFileUrl}
-      />
-
-      {showModal && (
-        <AssessmentModal
+      <main className="max-w-4xl mx-auto space-y-8 ">
+        <FileUpload
           files={files}
-          notionUrl={notionUrl}
-          setNotionUrl={setNotionUrl}
-          setAssessmentResults={setAssessmentResults}
-          setIsAssessing={setIsAssessing}
-          isAssessing={isAssessing}
-          setShowModal={setShowModal}
+          setFiles={setFiles}
+          setUploadedFiles={setUploadedFiles}
         />
-      )}
-    </>
+
+        <FileList
+          uploadedFiles={uploadedFiles}
+          assessmentResults={assessmentResults}
+          setShowModal={setShowModal}
+          setSelectedFileUrl={setSelectedFileUrl}
+          selectedFileUrl={selectedFileUrl}
+        />
+
+        {showModal && (
+          <AssessmentModal
+            files={files}
+            notionUrl={notionUrl}
+            setNotionUrl={setNotionUrl}
+            setAssessmentResults={setAssessmentResults}
+            setIsAssessing={setIsAssessing}
+            isAssessing={isAssessing}
+            setShowModal={setShowModal}
+          />
+        )}
+      </main>
+    </div>
   );
 };
 

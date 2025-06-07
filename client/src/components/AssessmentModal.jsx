@@ -66,31 +66,37 @@ const AssessmentModal = ({
     }
   };
   return (
-    <div className="assessment-modal-container">
-            <h3>
-              Länk till uppgiftsbeskrivningen (Notion):
-            </h3>
-            <input
-              type="text"
-              placeholder="https://www.notion.so..."
-              value={notionUrl}
-              onChange={(event) => setNotionUrl(event.target.value)}
-            />
-            <div className="assessment-btn-container">
-              <button
-                onClick={handleAssessment}
-                disabled={isAssessing}
-              >
-                {isAssessing ? "Bearbetar..." : "Kör"}
-              </button>
-              <button
-                onClick={() => setShowModal(false)}
-                disabled={isAssessing}
-              >
-                Stäng
-              </button>
-            </div>
-          </div>
+    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
+      <div className="bg-white rounded-xl p-6 w-full max-w-md shadow-lg">
+        <h3 className="text-lg font-semibold mb-2">
+          Länk till uppgiftsbeskrivningen (Notion):
+        </h3>
+        <input
+          type="text"
+          placeholder="https://www.notion.so..."
+          value={notionUrl}
+          onChange={(event) => setNotionUrl(event.target.value)}
+          className="w-full border border-brown/20 p-2 rounded-md text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue"
+        />
+
+        <div className="flex justify-end gap-3">
+          <button
+            onClick={handleAssessment}
+            disabled={isAssessing}
+            className="bg-blue text-white px-4 py-2 rounded-md hover:bg-blue/90 transition disabled:opacity-50 cursor-pointer"
+          >
+            {isAssessing ? "Bearbetar..." : "Kör"}
+          </button>
+          <button
+            onClick={() => setShowModal(false)}
+            disabled={isAssessing}
+            className="text-brown border border-brown/30 px-4 py-2 rounded-md hover:bg-brown/10 disabled:opacity-50 cursor-pointer"
+          >
+            Stäng
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 
