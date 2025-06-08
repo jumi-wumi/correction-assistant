@@ -13,7 +13,7 @@ function App() {
   });
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[#f7f4f3] text-[#64473a] font-['Inter'] uppercase">
       <Dashboard />
     </div>
   );
