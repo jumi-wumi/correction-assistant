@@ -4,10 +4,6 @@ import dotenv from "dotenv"
 import uploadRoute from "./routes/upload-unzipped.js"
 import assessRoute from "./routes/assess-folder.js"
 
-// Debug: Log when routes are imported
-console.log("Upload route imported:", typeof uploadRoute);
-console.log("Assess route imported:", typeof assessRoute);
-
 const app = express(); 
 
 dotenv.config(); 
