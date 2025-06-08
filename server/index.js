@@ -1,10 +1,6 @@
 import express from "express";
 import cors from "cors"; 
 import dotenv from "dotenv"
-import OpenAI from "openai";
-import path from "path"
-// import router from "./routes/correct.js"
-// import uploadRoute from "./routes/upload.js"
 import uploadRoute from "./routes/upload-unzipped.js"
 import assessRoute from "./routes/assess-folder.js"
 
@@ -69,7 +65,7 @@ app.get("/", (request, response) => {
 
 //     try{
 //         const modelResponse = await openai.responses.create({
-//             model: "gpt-4.1",
+//             model: "",
 //             input: "Ge mig ett coolt djur-fakta"
 //         }); 
 
