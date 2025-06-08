@@ -81,7 +81,7 @@ router.post(
 
       // go through and process each file
       for (const { file, extractedText } of extractedFiles) {
-        const fixedPrompt = `Kontrollera endast om alla G-nivå frågor är besvarade. Ge output i formatet: om alla frågor är besvarade ✅. Om inte: [antal frågor besvarade]/[antal totala frågor]. Detta är uppgiftsbeskrivningen: "${
+        const fixedPrompt = `Kontrollera endast om alla G-nivå frågor är besvarade. Ge output i formatet: om alla frågor är besvarade ☑️. Om inte: [antal frågor besvarade]/[antal totala frågor]. Detta är uppgiftsbeskrivningen: "${
           notionText || "Ingen uppgiftsbeskrivning tillgänglig"
         }". 
             Här är elevens inlämning: "${extractedText}", Fil: ${
