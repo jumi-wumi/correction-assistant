@@ -88,13 +88,6 @@ router.post(
           file.originalname
         }. `;
 
-        // upload to openAI
-        const fileStream = fs.createReadStream(file.path);
-        const uploadedFile = await openai.files.create({
-          file: fileStream,
-          purpose: "assistants",
-        });
-
         // sned to responses api
         const responseData = await openai.responses.create({
           model: "gpt-4.1-nano",
@@ -105,7 +98,6 @@ router.post(
 
         results.push({
           filename: file.originalname,
-          fileId: uploadedFile.id,
           assessment,
         });
       }
