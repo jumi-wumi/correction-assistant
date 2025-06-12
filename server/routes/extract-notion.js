@@ -1,7 +1,7 @@
 import puppeteer from "puppeteer";
 import { htmlToText } from "html-to-text";
 
-const getTextFromNotion = async (url) => {
+const getTextFromNotion = async (notionUrl) => {
   // launch browser instance in headless mode i.e. no UI
   const browser = await puppeteer.launch({
     headless: "new",
@@ -20,8 +20,8 @@ const getTextFromNotion = async (url) => {
   // set viewport size to help fake real browser
   await page.setViewport({ width: 1280, height: 800 });
 
-  // go to url
-  await page.goto(url, { waitUntil: "networkidle0" });
+  // go to notionUrl
+  await page.goto(notionUrl, { waitUntil: "networkidle0" });
 
   // wait for content on Notion page to render in DOM
   await page.waitForSelector(".notion-page-content", { timeout: 10000 });
@@ -45,10 +45,10 @@ const getTextFromNotion = async (url) => {
 export default getTextFromNotion;
 
 // Test
-// const notionUrl =
+// const notionnotionUrl =
 //   "https://www.notion.so/Teorihandbok-del-1-Avancerad-NET-1b6a11b2b40c80f1b91cf2313cf34c11";
 
-// getTextFromNotion(notionUrl)
+// getTextFromNotion(notionnotionUrl)
 //   .then((text) => {
 //     console.log(text);
 //   })
