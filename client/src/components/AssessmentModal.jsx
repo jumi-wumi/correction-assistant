@@ -65,10 +65,10 @@ const AssessmentModal = ({
       setIsAssessing(false);
     }
   };
-  return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
-      <div className="bg-white rounded-xl p-6 w-full max-w-md shadow-lg">
-        <h3 className="text-lg font-semibold mb-2">
+return (
+    <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center backdrop-blur-sm">
+      <div className="bg-gray-800 border border-gray-700 rounded-xl p-6 w-full max-w-md shadow-2xl">
+        <h3 className="text-lg font-semibold mb-4 text-white">
           Länk till uppgiftsbeskrivningen (Notion):
         </h3>
         <input
@@ -76,21 +76,37 @@ const AssessmentModal = ({
           placeholder="https://www.notion.so..."
           value={notionUrl}
           onChange={(event) => setNotionUrl(event.target.value)}
-          className="w-full border border-brown/20 p-2 rounded-md text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue"
+          disabled={isAssessing}
+          className="w-full bg-gray-700 border border-gray-600 text-white placeholder-gray-400 p-3 rounded-lg text-sm mb-6 focus:outline-none focus:ring-2 focus:ring-blue focus:border-transparent disabled:opacity-50"
         />
+
+        {isAssessing && (
+          <div className="mb-6 p-4 bg-gray-700 rounded-lg">
+            <div className="flex items-center space-x-3">
+              <div className="animate-spin rounded-full h-5 w-5 border-2 border-blue border-t-transparent"></div>
+              <span className="text-gray-300 text-sm">Bearbetar filer...</span>
+            </div>
+            <div className="mt-3 bg-gray-600 rounded-full h-2">
+              <div className="bg-blue h-2 rounded-full animate-pulse" style={{width: '60%'}}></div>
+            </div>
+            <p className="text-xs text-gray-400 mt-2">Detta kan ta en stund. Du kan hämta kaffe!</p>
+          </div>
+        )}
 
         <div className="flex justify-end gap-3">
           <button
             onClick={handleAssessment}
             disabled={isAssessing}
-            className="bg-blue text-white px-4 py-2 rounded-md hover:bg-blue/90 transition disabled:opacity-50 cursor-pointer"
+            className="bg-blue text-white px-6 py-2 rounded-lg hover:bg-blue transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
           >
-            {isAssessing ? "Bearbetar..." : "Kör"}
+            {isAssessing && (
+              <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+            )}
+            <span>{isAssessing ? "Bearbetar..." : "Kör"}</span>
           </button>
           <button
             onClick={() => setShowModal(false)}
-            disabled={isAssessing}
-            className="text-brown border border-brown/30 px-4 py-2 rounded-md hover:bg-brown/10 disabled:opacity-50 cursor-pointer"
+            className="text-gray-300 border border-gray-600 px-6 py-2 rounded-lg hover:bg-gray-700 disabled:opacity-50 transition-colors"
           >
             Stäng
           </button>
