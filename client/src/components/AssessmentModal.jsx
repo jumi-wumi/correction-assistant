@@ -77,13 +77,13 @@ return (
           value={notionUrl}
           onChange={(event) => setNotionUrl(event.target.value)}
           disabled={isAssessing}
-          className="w-full bg-dark border border-purple text-white placeholder-medium p-3 rounded-lg text-sm mb-6 focus:outline-none focus:ring-2 focus:ring-purple focus:border-transparent disabled:opacity-50"
+          className="w-full bg-dark border border-purple text-white placeholder-medium p-3 rounded-lg text-sm mb-6 focus:outline-none focus:ring-2 focus:ring-teal focus:border-transparent disabled:opacity-50"
         />
 
         {isAssessing && (
           <div className="mb-6 p-4 bg-gray-700 rounded-lg">
             <div className="flex items-center space-x-3">
-              <div className="animate-spin rounded-full h-5 w-5 border-2 border-blue border-t-transparent"></div>
+              <div className="animate-spin rounded-full h-5 w-5 border-2 border-purple border-t-transparent"></div>
               <span className="text-gray-300 text-sm">Bearbetar filer...</span>
             </div>
             <div className="mt-3 bg-medium rounded-full h-2">
@@ -97,7 +97,7 @@ return (
           <button
             onClick={handleAssessment}
             disabled={isAssessing}
-            className="bg-purple text-white px-6 py-2 rounded-lg hover:bg-purple transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+            className="bg-purple text-white px-6 py-2 rounded-lg hover:bg-teal transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
           >
             {isAssessing && (
               <div className="animate-spin rounded-full h-4 w-4 border-2 border-purple border-t-transparent"></div>
