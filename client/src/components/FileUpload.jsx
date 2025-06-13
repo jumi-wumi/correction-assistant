@@ -67,7 +67,7 @@ const FileUpload = ({ files, setFiles, setUploadedFiles }) => {
         />
         <button
           onClick={handleUpload}
-          className="mt-4 bg-dark text-darkest px-6 py-2 rounded-xl cursor-pointer  hover:bg-purple hover:text-darkest shadow-lg"
+          className="mt-4 bg-dark text-medium px-6 py-2 rounded-xl cursor-pointer  hover:bg-purple hover:text-darkest shadow-lg"
         >
           Ladda upp filer
         </button>

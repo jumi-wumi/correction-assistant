@@ -17,7 +17,7 @@ const FileList = ({
             </h2>
             <button
               onClick={() => setShowModal(true)}
-              className="text-sm bg-dark text-darkest px-4 py-2 rounded-lg hover:bg-purple cursor-pointer"
+              className="text-sm bg-teal text-white px-4 py-2 rounded-lg hover:bg-purple cursor-pointer"
             >
               Kontrollera alla filer
             </button>
