@@ -53,7 +53,7 @@ const FileUpload = ({ files, setFiles, setUploadedFiles }) => {
 
   return (
     <>
-      <div className="bg-white border border-brown/20 p-6 rounded-2xl shadow-sm text-center flex flex-col sm:flex-row sm:items-center sm:gap-4 w-full justify-center">
+      <div className="bg-darkest p-6 rounded-2xl border-b shadow-xl border-purple text-center flex flex-col sm:flex-row sm:items-center sm:gap-4 w-full justify-center">
         {/* <label className="text-brown font-medium sm:w-1/4 text-center sm:text-right mb-2 sm:mb-0">
           Välj filer:
         </label> */}
@@ -63,11 +63,11 @@ const FileUpload = ({ files, setFiles, setUploadedFiles }) => {
           directory="true"
           multiple
           onChange={handleFileChange}
-          className="block w-full text-sm text-brown file:px-4 file:py-2 file:font-semibold file:cursor-pointer file:border-1 file:rounded"
+          className="block w-full text-sm text-medium file:px-4 file:py-2 file:rounded-xl file:font-semibold file:cursor-pointer file:border-1 file:rounded file:border-[#6940a5]"
         />
         <button
           onClick={handleUpload}
-          className="mt-4 bg-blue text-white px-6 py-2 rounded-xl font-medium cursor-pointer  hover:bg-blue/90"
+          className="mt-4 bg-dark text-darkest px-6 py-2 rounded-xl cursor-pointer  hover:bg-purple hover:text-darkest shadow-lg"
         >
           Ladda upp filer
         </button>

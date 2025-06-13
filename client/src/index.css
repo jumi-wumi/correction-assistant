@@ -1,9 +1,14 @@
 @import "tailwindcss";
 
 @theme {
-  --color-white: #f7f4f3;
+  --color-white: #fafafa;
+  --color-pink: #ad1a72;
+  --color-purple: #6940a5;
   --color-brown: #64473a;
   --color-blue: #0b6e99;
+  --color-teal: #0f7b6c;
+  --color-dark: #424242;
+  --color-medium: #bdbdbd;
+  --color-darkest: #212121;
   --font-main: "Inter";
 }
-

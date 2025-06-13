@@ -21,9 +21,9 @@ const Dashboard = () => {
   const [isAssessing, setIsAssessing] = useState(false);
 
   return (
-    <div className="min-h-screen bg-white text-brown font-main p-6 ">
+    <div className="min-h-screen bg-darkest text-white p-6 font-mono tracking-wider uppercase">
       <header className="mb-8">
-        <h1 className="text-4xl font-bold text-blue">qlok bok snok</h1>
+        <h1 className="text-4xl font-bold text-dark">qlok bajs</h1>
       </header>
 
       <main className="max-w-4xl mx-auto space-y-8 ">
