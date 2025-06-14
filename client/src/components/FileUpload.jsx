@@ -63,7 +63,7 @@ const FileUpload = ({ files, setFiles, setUploadedFiles }) => {
           directory="true"
           multiple
           onChange={handleFileChange}
-          className="block w-full text-sm text-medium file:px-4 file:py-2 file:rounded-xl file:font-semibold file:cursor-pointer file:border-1 file:rounded file:border-[#6940a5]"
+          className="block w-full text-sm text-medium file:px-4 file:py-2 file:font-semibold file:cursor-pointer file:border-1 file:rounded file:border-[#6940a5]"
         />
         <button
           onClick={handleUpload}
