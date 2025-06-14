@@ -59,7 +59,6 @@ router.post(
               // join pages into one string
               extractedText = textPages.join("\n\n--- Page Break ---\n\n");
 
-              console.log(extractedText);
             } catch (error) {
               console.error("PDF extraction error:", error);
               extractedText = "Failed to extract text from PDF";
