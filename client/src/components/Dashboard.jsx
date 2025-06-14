@@ -1,4 +1,3 @@
-// This is the parent container
 import { useState } from "react";
 import FileUpload from "./FileUpload";
 import FileList from "./FileList";
@@ -43,7 +42,7 @@ const Dashboard = () => {
 
         {showModal && (
           <AssessmentModal
-            files={files}
+            uploadedFiles={uploadedFiles} // Changed from 'files' to 'uploadedFiles'
             notionUrl={notionUrl}
             setNotionUrl={setNotionUrl}
             setAssessmentResults={setAssessmentResults}

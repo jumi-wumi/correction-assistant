@@ -1,7 +1,7 @@
 import React from "react";
 
 const AssessmentModal = ({
-  files,
+  uploadedFiles,
   notionUrl,
   setNotionUrl,
   setAssessmentResults,
@@ -10,33 +10,27 @@ const AssessmentModal = ({
   setShowModal,
 }) => {
   const handleAssessment = async () => {
-    if (!files || files.length === 0) {
-      alert("Please select files first");
+    if (!uploadedFiles || uploadedFiles.length === 0) {
+      alert("Please upload files first");
       return;
     }
 
     setIsAssessing(true);
     console.log("Starting assessment...");
-
-    const formData = new FormData();
-
-    // Add files to form data - use the original files, not uploadedFiles
-    files.forEach((file, index) => {
-      formData.append("files", file);
-      console.log(`Added file ${index}: ${file.name}`);
-    });
-
-    // Add assessment parameters
-    if (notionUrl) {
-      formData.append("notionUrl", notionUrl);
-      console.log("Added Notion URL:", notionUrl);
-    }
+    console.log("Files to assess:", uploadedFiles);
 
     try {
       console.log("Sending request to /assess-folder");
+      
       const response = await fetch("http://localhost:3000/assess-folder", {
         method: "POST",
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          notionUrl: notionUrl,
+          uploadedFiles: uploadedFiles 
+        }),
       });
 
       console.log("Response status:", response.status);
@@ -65,7 +59,8 @@ const AssessmentModal = ({
       setIsAssessing(false);
     }
   };
-return (
+
+  return (
     <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center backdrop-blur-sm">
       <div className="bg-darkest border border-dark rounded-xl p-6 w-full max-w-md shadow-2xl">
         <h3 className="text-lg font-semibold mb-4 text-white">
